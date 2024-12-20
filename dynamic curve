@@ -1,0 +1,37 @@
+import matplotlib
+matplotlib.use('TkAgg')  
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+import pandas as pd
+
+# read data
+data = pd.read_csv('数据.txt', sep='\t', header=None, names=['Time', 'Monitored', 'Calculated'])
+
+# plot initialized
+fig, ax = plt.subplots()
+line_monitored, = ax.plot([], [], lw=2, label='Monitored Data')
+line_calculated, = ax.plot(data['Time'], data['Calculated'], lw=2, alpha=0.5, label='Calculated Data')
+
+# property setting
+ax.set_xlim(data['Time'].min() ,data['Time'].max())
+ax.set_ylim(min(data['Monitored'].min(), data['Calculated'].min()),
+            max(data['Monitored'].max(), data['Calculated'].max()))
+ax.set_xlabel('time /s', fontsize='20')
+ax.set_ylabel('displacement /m', fontsize='20')
+ax.legend(fontsize='20')
+ax.tick_params(axis='both', which='major', labelsize=20)  
+
+# function initialized
+def init():
+    line_monitored.set_data([], [])
+    return line_monitored,
+
+# function of animate upgrade
+def update(frame):
+    line_monitored.set_data(data['Time'][:frame], data['Monitored'][:frame])
+    return line_monitored,
+
+# animate crete
+ani = animation.FuncAnimation(fig, update, frames=len(data), init_func=init, blit=True, interval=1)
+
+plt.show()
