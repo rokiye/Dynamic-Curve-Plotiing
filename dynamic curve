@@ -5,7 +5,7 @@ import matplotlib.animation as animation
 import pandas as pd
 
 # read data
-data = pd.read_csv('数据.txt', sep='\t', header=None, names=['Time', 'Monitored', 'Calculated'])
+data = pd.read_csv('data.txt', sep='\t', header=None, names=['Time', 'Monitored', 'Calculated'])
 
 # plot initialized
 fig, ax = plt.subplots()
